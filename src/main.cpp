@@ -2,19 +2,20 @@
 #include "IO_setup.h"
 #include <VL53L0X.h>
 
-#define NUM_SENSORS 3
+#define NUM_SENSORS 2
 
 VL53L0X ToF[NUM_SENSORS];
 
 // GPIO's - XSHUT PINS
-const uint8_t XSHUT[NUM_SENSORS] = {}; 
+const uint8_t XSHUT[NUM_SENSORS] = {IO1, IO2}; 
 // I2C Sensor Address
-const uint8_t ADDR[NUM_SENSORS] = {}; 
+const uint8_t ADDR[NUM_SENSORS] = {0x30, 0X31}; 
 // Array to Stor Height
 uint16_t height[NUM_SENSORS] = {0};
 
 void Heartbeat();
 void ToF_init();
+void read_ToF();
 
 void setup() {
 
@@ -31,7 +32,7 @@ void loop() {
   Heartbeat(); 
   delayMicroseconds(1000);
 
-  if(Serial.available() && Serial.read() == 'r'){
+  if(Serial.available()){
 
     read_ToF();
     for(int i=0;i<NUM_SENSORS;i++){
